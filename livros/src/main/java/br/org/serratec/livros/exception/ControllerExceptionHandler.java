@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -30,6 +31,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 		ErroResposta erroResposta = new ErroResposta(status.value(), "Há campos invalidos", LocalDateTime.now(), erros);
 		
 		return super.handleExceptionInternal(ex, erroResposta ,headers, status, request);
+	}
+	
+	@ExceptionHandler(PaginaException.class)
+		private ResponseEntity<Object> handlePaginaException(PaginaException ex){
+		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
 
 }
