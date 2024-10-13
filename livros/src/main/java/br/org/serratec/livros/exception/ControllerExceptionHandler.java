@@ -33,8 +33,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 		return super.handleExceptionInternal(ex, erroResposta ,headers, status, request);
 	}
 	
-	@ExceptionHandler(PaginaException.class)
-		private ResponseEntity<Object> handlePaginaException(PaginaException ex){
+	@ExceptionHandler(NegativeException.class)
+		private ResponseEntity<Object> handlePaginaException(NegativeException ex){
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
 

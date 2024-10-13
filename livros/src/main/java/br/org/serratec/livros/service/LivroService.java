@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.livros.domain.Livro;
-import br.org.serratec.livros.exception.PaginaException;
+import br.org.serratec.livros.exception.NegativeException;
 import br.org.serratec.livros.repository.LivroRepository;
 
 @Service
@@ -26,7 +26,7 @@ public class LivroService {
 	
 	public Livro inserir(Livro livro) {
 		if(livro.getQtdPaginas() <= 0) {
-			throw new PaginaException("o campo QtdPaginas não pode ser menor ou igual a 0");
+			throw new NegativeException("o campo QtdPaginas não pode ser menor ou igual a 0");
 		}
 		return livroRepository.save(livro);
 	}
