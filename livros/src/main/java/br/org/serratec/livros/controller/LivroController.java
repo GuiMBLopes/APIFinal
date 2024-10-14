@@ -37,7 +37,8 @@ public class LivroController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", content = {
 			@Content(schema = @Schema(implementation = Livro.class), mediaType = "application/json") }, description = "Retorna todos os livros cadastrados"),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "404",content = {
+					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
 	@GetMapping
@@ -50,7 +51,8 @@ public class LivroController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", content = {
 			@Content(schema = @Schema(implementation = Livro.class), mediaType = "application/json") }, description = "Retorna o livro procurado"),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "404", content = {
+					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
 	@GetMapping("/{id}")
@@ -63,7 +65,8 @@ public class LivroController {
 			+ "com os dados cadastrados do servidor")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Livro adicionado "),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "404", content = {
+					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 
 	@PostMapping
@@ -81,7 +84,8 @@ public class LivroController {
 			+ "com os dados alterados")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Livro alterado"),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "404", content = {
+					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 	
 
@@ -96,11 +100,13 @@ public class LivroController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@Operation(summary = "Deleta um livro existente", description = "A resposta é "
-			+ "pagina com o item removido")
-	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Item removido"),
+	@Operation(summary = "Altera um livro existente", description = "A resposta é o objeto "
+			+ "excluido")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", content = {
+			@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Exclui um objeto pelo id"),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "404", content = {
+					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
 			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
 	
 	
