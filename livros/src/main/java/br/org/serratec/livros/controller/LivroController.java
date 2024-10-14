@@ -36,10 +36,10 @@ public class LivroController {
 			+ "livro id, titulo, quantidade de paginas, autor, ano de lançamento, editora")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", content = {
 			@Content(schema = @Schema(implementation = Livro.class), mediaType = "application/json") }, description = "Retorna todos os livros cadastrados"),
-			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
-			@ApiResponse(responseCode = "404",content = {
-					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
+			@ApiResponse(responseCode = "401", description = "Erro na autenticação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Não autorizado\", \"message\": \"Credenciais inválidas.\"}"))),
+			@ApiResponse(responseCode = "404", content = {
+					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Internal Server Error\", \"message\": \"Ocorreu um erro inesperado.\"}"))) })
 
 	@GetMapping
 	public ResponseEntity<List<Livro>> listar() {
@@ -50,10 +50,10 @@ public class LivroController {
 			+ "livro id, titulo, quantidade de paginas, autor, ano de lançamento, editora")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", content = {
 			@Content(schema = @Schema(implementation = Livro.class), mediaType = "application/json") }, description = "Retorna o livro procurado"),
-			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
+			@ApiResponse(responseCode = "401", description = "Erro na autenticação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Não autorizado\", \"message\": \"Credenciais inválidas.\"}"))),
 			@ApiResponse(responseCode = "404", content = {
-					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
+					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Internal Server Error\", \"message\": \"Ocorreu um erro inesperado.\"}"))) })
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Livro> buscar(@PathVariable Long id) {
@@ -64,30 +64,27 @@ public class LivroController {
 	@Operation(summary = "Insere um novo livro", description = "A resposta é um objeto "
 			+ "com os dados cadastrados do servidor")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Livro adicionado "),
-			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
+			@ApiResponse(responseCode = "401", description = "Erro na autenticação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Não autorizado\", \"message\": \"Credenciais inválidas.\"}"))),
 			@ApiResponse(responseCode = "404", content = {
-					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
+					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Internal Server Error\", \"message\": \"Ocorreu um erro inesperado.\"}"))) })
 
 	@PostMapping
 	public ResponseEntity<Livro> adicionar(@Valid @RequestBody Livro livro) {
 		livro = livroService.inserir(livro);
 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId())
-				.toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(livro.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(livro);
 	}
-	
-	
+
 	@Operation(summary = "Altera um livro existente", description = "A resposta é um objeto "
 			+ "com os dados alterados")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Livro alterado"),
-			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
+			@ApiResponse(responseCode = "401", description = "Erro na autenticação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Não autorizado\", \"message\": \"Credenciais inválidas.\"}"))),
 			@ApiResponse(responseCode = "404", content = {
-					@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	
+					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Internal Server Error\", \"message\": \"Ocorreu um erro inesperado.\"}"))) })
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Livro> mudar(@PathVariable Long id, @Valid @RequestBody Livro livro) {
@@ -100,16 +97,14 @@ public class LivroController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@Operation(summary = "Altera um livro existente", description = "A resposta é o objeto "
-			+ "excluido")
+	@Operation(summary = "Exclui um livro", description = "A resposta é o objeto " + "excluido")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", content = {
-			@Content(schema = @Schema(type = "object", nullable = true ), mediaType = "application/json") }, description = "Exclui um objeto pelo id"),
-			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
+			@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Exclui um objeto pelo id"),
+			@ApiResponse(responseCode = "401", description = "Erro na autenticação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Não autorizado\", \"message\": \"Credenciais inválidas.\"}"))),
 			@ApiResponse(responseCode = "404", content = {
 					@Content(schema = @Schema(type = "object", nullable = true), mediaType = "application/json") }, description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação") })
-	
-	
+			@ApiResponse(responseCode = "505", description = "Exceção interna da aplicação", content = @Content(mediaType = "application/json", schema = @Schema(type = "object", example = "{\"error\": \"Internal Server Error\", \"message\": \"Ocorreu um erro inesperado.\"}"))) })
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Livro> deletar(@PathVariable Long id) {
 		if (livroService.verifcarId(id)) {
