@@ -97,7 +97,7 @@ public class LivroController {
 	}
 
 	@Operation(summary = "Deleta um livro existente", description = "A resposta é "
-			+ "Pagina com o item removido")
+			+ "pagina com o item removido")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Item removido"),
 			@ApiResponse(responseCode = "401", description = "Erro na autenticação"),
 			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
